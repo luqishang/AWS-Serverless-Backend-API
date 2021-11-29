@@ -1,0 +1,553 @@
+"""
+ユーザー情報
+"""
+type User
+@model
+{
+  id: ID! "ID"
+  account: String! "アカウント名"
+  lastName: String "氏名(姓)"
+  firstName: String "氏名(名)"
+  lastKana: String "カナ名(姓)"
+  firstKana: String "カナ名(名)"
+  nickName: String "画面表示名"
+  birth: AWSDate "生年月日"
+  tel: String "電話番号"
+  email: String "メールアドレス"
+  gender: String "性別(男性:male 女性:female)"
+  deviceToken: String "デバイストークン"
+  endpointArn: String "AWS SNSのendpointArn"
+  guidanceDate: AWSDateTime "初回指導日時"
+  guidanceState: String "指導状態"
+  organizationCd: String "組織コード"
+  organizationName: String "組織名称"
+  areaCode: ID "エリアコード"
+  hcDate: AWSDate "健診日"
+  hckWeight: Float "健診体重"
+  hcAbdominal: Float "健診腹囲"
+  appFirstAt: AWSDateTime "アプリ初回登録日時"
+  supportType: String "階層化判定結果"
+  loginNoFlg: Int "ログイン不可フラグ"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+  deletedAt: AWSTimestamp
+}
+
+"""
+エリアマスタ
+"""
+type AreaMaster
+@model 
+@key(fields: ["areaCode"])
+{
+  areaCode: ID! "エリアコード"
+  userId: String "エリア名"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+保健師サブエリア情報
+"""
+type NurseSubArea
+@model 
+@key(fields: ["nurseId", "subAreaCode"])
+@key(name: "gsi_NurseSubAreaNurseId", fields:["nurseId"], queryField: "listNurseSubAreaNurseId")
+{
+  nurseId: ID! "保健師ID"
+  subAreaCode: ID! "サブエリアコード"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+保健師保険対象者グループ
+"""
+type NurseUserGroup
+@model 
+@key(fields: ["nurseId", "userId"])
+@key(name: "gsi_NurseUserGroupNurseId", fields:["nurseId"], queryField: "listNurseUserGroupNurseId")
+{
+  nurseId: ID! "保健師ID"
+  group: [User] @connection(fields: ["nurseId"])
+  userId: ID! "ユーザID"
+  user: [User] @connection(fields: ["userId"])
+}
+
+"""
+身体測定情報
+"""
+type HealthCheck
+@model
+@key(fields: ["userId", "recordedAt"])
+@key(name: "gsi-HealthCheckUserIdRecordAt", fields: ["userId", "recordedAt"], queryField: "listHealthCheckUserIdRecordAt")
+{
+  userId: ID! "ユーザID"
+  recordedAt: AWSDate! "記録年月日"
+  weight: Float "体重"
+  abdominal: Float "腹囲"
+  dbp: Int "血圧(拡張期)"
+  sbp: Int "血圧(収縮期)"
+  stepsPerDayAuto: Int "１日あたり歩数(自動)"
+  stepsPerHourAuto: Int "１時間あたり歩数(自動)"
+  stepsPerDayManual: Int "１日あたり歩数(手動)"
+  totalCaloriePerDayAuto: Int "１日あたりトータル消費カロリー(自動)"
+  nonExerciseCaloriePerDayAuto: Int "１日あたり安静時消費カロリー(自動)"
+  exerciseCaloriePerDayAuto: Int "１日あたり運動消費カロリー(自動)"
+  sleepTimePerDayAuto: Int "１日あたり睡眠時間(自動)"
+  acquiredAt: AWSDateTime "歩数取得日時"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+身体測定情報(時間単位)
+"""
+type HealthCheckPerHour
+@model
+@key(fields: ["userId", "recordedAt", "hour"])
+@key(name: "gsi-HealthCheckPerHourUserIdRecordAt", fields: ["userId", "recordedAt"], queryField: "listHealthCheckPerHourUserIdRecordAt")
+{
+  userId: ID! "ユーザID"
+  recordedAt: AWSDate! "記録年月日"
+  hour: Int! "hour"
+  totalCalorie: Int "トータル消費カロリー"
+  nonExerciseCalorie: Int "安静時消費カロリー"
+  exerciseCalorie: Int "運動消費カロリー"
+  stepsPerHourAuto: Int "１時間あたり歩数(自動)"
+  acquiredAt: AWSDateTime "データ取得日時"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+特定保健指導目標
+"""
+type SpecificHealthGoal
+@model
+@key(fields: ["userId", "settingDate"])
+@key(name: "gsi-SpecificHealthGoalUserIdSettingDate", fields: ["userId", "settingDate"], queryField: "listSpecificHealthGoalUserIdSettingDate")
+{
+  userId: ID! "ユーザID"
+  settingDate: AWSDate! "設定年月日"
+  period: Int "期間"
+  goalWeight: Float "目標体重"
+  goalAbdominal: Float "目標腹囲"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+規約Master
+"""
+type RuleMaster
+@model
+@key(fields: ["ruleNo", "settingDate"])
+@key(name: "gsi-RuleMasterValidFlg", fields: ["validFlg"], queryField: "listRuleMasterValidFlg")
+{
+  ruleNo: Int! "規約番号"
+  settingDate: AWSDate! "規約作成日"
+  ruleContents: String "規約内容"
+  validFlg: Int "有効フラグ"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+規約に関する表示
+"""
+type RuleDisplay
+@model
+@key(fields: ["userId", "ruleNo"])
+@key(name: "gsi-RuleDisplayRuleNo", fields: ["ruleNo"], queryField: "listRuleDisplayRuleNo")
+{
+  userId: ID! "ユーザID"
+  ruleNo: Int! "規約番号"
+  displayFlg: Int "規約表示フラグ"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+規約に関する同意
+"""
+type RuleAgree
+@model
+@key(fields: ["userId", "ruleNo", "agreedAt"])
+@key(name: "gsi-RuleAgreeUserIdRuleNo", fields: ["userId", "ruleNo"], queryField: "listRuleAgreeByUserIdRuleNo")
+{
+  userId: ID! "ユーザID"
+  ruleNo: Int! "規約番号"
+  agreedAt: AWSTimestamp! "同意日時"
+  settingDate: AWSDate! "規約作成日"
+  agreement: Boolean "規約同意可否"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+食事摂取ログ
+"""
+type EatLog
+@model
+@key(fields: ["userId", "mealDate", "mealTime", "mealNo"])
+@key(name: "gsi-EatLogUserIdMealDate", fields: ["userId", "mealDate"], queryField: "listEatLogByUserIdMealDate")
+{
+  userId: ID! "ユーザID"
+  mealDate: AWSDate! "食事日付"
+  mealTime: String! "食事時間30分おきのデータ"
+  mealNo: Int! "枝番"
+  photoTime: AWSDateTime "撮影時間"
+  photoKey: String "画像キー"
+  photoPath: String "画像パス"
+  mealContents: String "食事内容"
+  importedBy: String "入手元"
+  menuName: String "メニュー名"
+  energy: Int "エネルギー(kcal)"
+  protein: Float "たんぱく質(g)"
+  lipid: Float "脂質(g)"
+  carbohydrate: Float "炭水化物(g)"
+  salinity: Float "塩分(g)"
+  createdAt: AWSTimestamp 
+  updatedAt: AWSTimestamp 
+}
+
+"""
+チャットメッセージ
+"""
+type ChatMessage
+@model 
+@key(name: "gsi_ChatMessageGroupId", fields:["groupId", "postedAt"], queryField: "listChatMessageGroupId")
+{
+  id: ID! "チャットメッセージID "
+  groupId: ID! "グループID"
+  chatGroup: [ChatGroup] @connection(fields:["groupId"])
+  body: String! "チャットメッセージ本文"
+  postedAt: AWSDateTime! "送信日時"
+  postedId: ID! "投稿者ユーザID"
+  postedUser: [User] @connection(fields: ["postedId"])
+  deletedAt: AWSTimestamp
+  createdAt: AWSTimestamp
+}
+
+"""
+チャットグループ
+"""
+type ChatGroup
+@model 
+{
+  id: ID! "チャットグループID"
+  name: String "グループ名"
+  topicArn: String "トピックArn"
+  deletedAt: AWSTimestamp
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+チャットグループメンバー
+"""
+type ChatGroupUser
+@model 
+@key(fields: ["groupId", "userId"])
+@key(name: "gsi_ChatGroupUserUserId", fields:["userId"], queryField: "listChatGroupUserUserId")
+{
+  groupId: ID! "グループID"
+  group: [ChatGroup] @connection(fields: ["groupId"])
+  userId: ID! "ユーザID"
+  subscriptionArn: String "サブスクリプションArn"
+  user: [User] @connection(fields: ["userId"])
+}
+
+
+"""
+行動目標マスタ
+"""
+type ActionGoalMaster
+@model
+@key(fields: ["goalId"])
+@key(name: "gsi-ActionGoalMasterPrimaryIdSecondaryId", fields: ["primaryId", "secondaryId"], queryField: "listActionGoalMasterPrimaryIdSecondaryId")
+{
+  goalId: Int! "行動目標ID"
+  primaryId: String "大分類ID"
+  primaryContent: String "大分類内容"
+  secondaryId: String "中分類ID"
+  secondaryContent: String "中分類内容"
+  tertiaryId: String "小分類ID"
+  tertiaryContent: String "小分類内容"
+  goalContent: String "行動目標内容"
+  exerciseUnit: String "運動単位"
+  foodUnit: String "食事単位"
+  defaultTime: Int "デフォルトの目標時間(分)"
+  defaultQuantity: Int "デフォルトの目標量"
+  defaultFrequency: Int "デフォルトの頻度"
+  foodOneFlg: Boolean "食品1使用フラグ"
+  foodTwoFlg: Boolean "食品2使用フラグ"
+  calorie: Int "カロリー消費"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+行動目標
+"""
+type ActionGoal
+@model
+@key(fields: ["userId", "goalSettingNo"])
+@key(name: "gsi-ActionGoalUserId", fields: ["userId"], queryField: "listActionGoalUserId")
+{
+  userId: ID! "ユーザーID"
+  goalSettingNo: Int! "行動目標枝番"
+  goalType: String "行動目標種類"
+  goalId: Int "行動目標ID"
+  primaryId: String "大分類ID"
+  secondaryId: String "中分類ID"
+  goalContent: String "行動目標内容"
+  calorie: Int "カロリー消費"
+  goalTime: Int "目標時間"
+  goalQuantity: Int "目標量"
+  exerciseUnit: String "運動単位"
+  frequencyCount: Int "目標頻度（回数）"
+  frequencyDayOfWeek: String "目標頻度（曜日指定）"
+  action: String "行為"
+  foodOne: String "食品1"
+  foodQuantityOne: String "食量1"
+  foodUnitOne: String "食事単位1"
+  foodTwo: String "食品2"
+  foodQuantityTwo: String "食量2"
+  foodUnitTwo: String "食事単位2"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+行動目標履歴
+"""
+type ActionGoalLog
+@model
+@key(fields: ["userId", "goalSettingNo", "settingAt"])
+@key(name: "gsi-ActionGoalLogUserIdHistoryContent", fields: ["userId", "historyContent"], queryField: "listActionGoalLogUserIdHistoryContent")
+@key(name: "gsi-ActionGoalLogUserIdGoalSettingNo", fields: ["userId", "goalSettingNo"], queryField: "listActionGoalLogUserIdGoalSettingNo")
+{
+  userId: ID! "ユーザーID"
+  goalSettingNo: Int! "行動目標枝番"
+  settingAt: AWSTimestamp! "設定日時"
+  startDate: AWSDate! "行動目標開始日"
+  endDate: AWSDate! "行動目標終了日"
+  historyContent: String "履歴内容"
+  goalType: String "行動目標種類"
+  goalId: Int "行動目標ID"
+  primaryId: String "大分類ID"
+  secondaryId: String "中分類ID"
+  goalContent: String "行動目標内容"
+  calorie: Int "カロリー消費"
+  goalTime: Int "目標時間"
+  goalQuantity: Int "目標量"
+  exerciseUnit: String "運動単位"
+  frequencyCount: Int "目標頻度（回数）"
+  frequencyDayOfWeek: String "目標頻度（曜日指定）"
+  action: String "行為"
+  foodOne: String "食品1"
+  foodQuantityOne: String "食量1"
+  foodUnitOne: String "食事単位1"
+  foodTwo: String "食品2"
+  foodQuantityTwo: String "食量2"
+  foodUnitTwo: String "食事単位2"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+行動目標評価結果
+"""
+type ActionGoalEvaluation
+@model
+@key(fields: ["userId", "goalSettingNo", "actionDate"])
+@key(name: "gsi-ActionGoalEvaluationUserIdActionDate", fields: ["userId", "actionDate"], queryField: "listActionGoalEvaluationUserIdActionDate")
+@key(name: "gsi-ActionGoalEvaluationUserId", fields: ["userId"], queryField: "listActionGoalEvaluationUserId")
+{
+  userId: ID! "ユーザーID"
+  goalSettingNo: Int! "行動目標枝番"
+  actionDate: AWSDate! "行動目標実施日"
+  actionGoalResult: Int "实施结果"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp 
+}
+
+"""
+アンケート情報
+"""
+type QuestionNaire
+@model
+@key(fields: ["questionNaireId"])
+@key(name: "gsi-QuestionNaireValidFlg", fields: ["validFlag"], queryField: "listQuestionNaireValidFlg")
+{
+  questionNaireId: ID! "アンケートID"
+  questionNaireDate: AWSDate! "アンケート日付"
+  questionNaireContents: String "アンケート内容"
+  questionNaireType: String! "アンケート種類"
+  interviewType: String "面談種類"
+  inputType: Int! "入力パターン"
+  primaryId: String "大分類ID"
+  secondaryId: String "中分類ID"
+  displayOrder: Int! "表示順"
+  validFlag: Int! "アンケート有効フラグ"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+  questionNaireAnswers: [QuestionNaireAnswer] @connection(keyName: "byQuestionNaire", fields: ["questionNaireId"])
+}
+
+"""
+アンケート回答情報
+"""
+type QuestionNaireAnswer
+@model
+@key(fields: ["questionNaireAnswerId"])
+@key(name: "gsi-QuestionNaireAnswerFlg", fields: ["validFlag"], queryField: "listQuestionNaireAnswerFlg")
+@key(name: "byQuestionNaire", fields: ["questionNaireId"])
+{
+  questionNaireAnswerId: ID! "アンケート回答ID"
+  questionNaireAnswerContents: String "アンケート回答内容"
+  questionNaireId: ID! "アンケートID"
+  validFlag: Int! "アンケート回答情報有効フラグ"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+アンケート回答結果
+"""
+type QuestionNaireAnswerResult
+@model
+@key(fields: ["userId", "questionNaireId", "questionNaireAnswerId"])
+@key(name: "gsi-QuestionNaireAnswerResultUserId", fields: ["userId"], queryField: "listQuestionNaireAnswerResultUserId")
+{
+  userId: ID! "ユーザーID"
+  questionNaireId: ID! "アンケートID"
+  questionNaireAnswerId: ID! "アンケート回答ID"
+  questionNaireType: String "アンケート種類"
+  inputType: Int "入力パターン"
+  questionNaireFreeAnswer: String "アンケート自由回答"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+チャットBot メッセージ送信履歴
+"""
+type ChatBotMessageLog
+@model
+@key(fields: ["userId", "messageId", "sendingAt"])
+@key(name: "gsi-ChatBotMessageLogAchieveStart", fields: ["userId", "achieveStart"], queryField: "listChatBotMessageLogAchieveStart")
+{
+  userId: ID! "ユーザーID"
+  messageId: ID! "メッセージID"
+  sendingAt: AWSTimestamp! "送信日時"
+  achieveStart: Int "達成率start"
+  achieveNo: Int "達成率枝番"
+  createdAt: AWSTimestamp "作成日時"
+  updatedAt: AWSTimestamp "更新日時"
+  chatBotMessageMaster: [ChatBotMessageMaster] @connection(fields: ["messageId"])
+}
+
+"""
+チャットBot メッセージMaster
+"""
+type ChatBotMessageMaster
+@model
+@key(fields: ["messageId"])
+@key(name: "gsi-ChatBotMessageMasterArticleType", fields: ["articleType"], queryField: "listChatBotMessageMasterArticleType")
+@key(name: "gsi-ChatBotMessageMasterArticleTypeSubCondition", fields: ["articleType", "subCondition"], queryField: "listChatBotMessageMasterArticleTypeSubCondition")
+@key(name: "gsi-ChatBotMessageMasterArticleTypeWeek", fields: ["articleType", "week"], queryField: "listChatBotMessageMasterArticleTypeWeek")
+{
+  messageId: ID! "メッセージID"
+  articleType: String "文章種類"
+  subCondition: String "子条件"
+  week: Int "週目"
+  achieveStart: Int "達成率start"
+  achieveEnd: Int "達成率end"
+  achieveNo: Int "達成率枝番"
+  weightFlg: Int "体重増減"
+  messageContent: String "メッセージ内容"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+中間支援アンケート履歴
+"""
+type SupportQuestionNaireLog
+@model
+@key(fields: ["userId", "supportCount"])
+@key(name: "gsi-SupportQuestionNaireLogUserId", fields: ["userId"], queryField: "listSupportQuestionNaireLogUserId")
+{
+  userId: ID! "ユーザーID"
+  supportCount: Int! "支援回目"
+  recordDate: AWSDate! "回答日"
+  weight: Float "体重"
+  abdominal: Float "腹囲"
+  goalSettingNoOne: Int "行動目標枝番1"
+  goalAchieveRateOne: Int "目標達成率1"
+  goalSettingNoTwo: Int "行動目標枝番2"
+  goalAchieveRateTwo: Int "目標達成率2"
+  goalSettingNoThree: Int "行動目標枝番3"
+  goalAchieveRateThree: Int "目標達成率3"
+  foodLife: String "食生活"
+  bodyActivity: String "身体活動"
+  smokingStatus: String "喫煙状況"
+  freeInputContent: String "自由入力コメント"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+システム設定
+"""
+type SystemConfigure
+@model
+@key(fields: ["configureNo"])
+@key(name: "gsi-SystemConfigureName", fields: ["configureName"], queryField: "listSystemConfigureName")
+{
+  configureNo: ID! "システム設定番号"
+  configureName: String "システム設定名"
+  contents: String "システム設定内容"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}
+
+"""
+保健師面談結果
+"""
+type NurseInterviewResult
+@model
+@key(fields: ["userId", "interviewNo"])
+{
+  userId: ID! "ユーザーID"
+  interviewNo: Int! "面談番号"
+  interviewDate: AWSDate "面談日"
+  weight: Float "体重"
+  abdominal: Float "腹囲"
+  goalSettingNoOne: Int "行動目標枝番1"
+  goalSettingOne: String "行動目標1"
+  goalChangeOne: String "目標変更1"
+  goalChangeFreeContentOne: String "目標変更内容1"
+  goalAchieveRateOne: Int "目標達成率1"
+  goalSettingNoTwo: Int "行動目標枝番2"
+  goalSettingTwo: String "行動目標2"
+  goalChangeTwo: String "目標変更2"
+  goalChangeFreeContentTwo: String "目標変更内容2"
+  goalAchieveRateTwo: Int "目標達成率2"
+  goalSettingNoThree: Int "行動目標枝番3"
+  goalSettingThree: String "行動目標3"
+  goalChangeThree: String "目標変更3"
+  goalChangeFreeContentThree: String "目標変更内容3"
+  goalAchieveRateThree: Int "目標達成率3"
+  foodLife: String "食生活"
+  bodyActivity: String "身体活動"
+  smokingStatus: String "喫煙状況"
+  satisfaction: Int "満足度"  
+  goodPoint: String "良い点"
+  badPoint: String "悪い点"
+  createdAt: AWSTimestamp
+  updatedAt: AWSTimestamp
+}

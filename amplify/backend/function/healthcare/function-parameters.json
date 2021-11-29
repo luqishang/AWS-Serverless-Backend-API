@@ -1,0 +1,36 @@
+{
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "healthcarelayerOne",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true,
+      "env": "dev"
+    }
+  ],
+  "permissions": {
+    "auth": {
+      "healthcare": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "api": {
+      "healthcareGraphQL": [
+        "Query",
+        "Mutation",
+        "Subscription"
+      ]
+    },
+    "storage": {
+      "s35f4002e8": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}

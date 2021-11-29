@@ -1,0 +1,37 @@
+{
+  "name": "healthcare-func",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "amazon-cognito-identity-js": "^5.0.3",
+    "aws-appsync": "^4.0.3",
+    "aws-serverless-express": "^3.3.5",
+    "body-parser": "^1.17.1",
+    "cognito-express": "^2.0.19",
+    "cors": "^2.8.5",
+    "express": "^4.15.2",
+    "express-validator": "^6.12.0",
+    "extensible-custom-error": "0.0.7",
+    "graphql": "^15.5.0",
+    "graphql-tag": "^2.12.4",
+    "html": "^1.0.0",
+    "js-yaml": "^4.1.0",
+    "markdown": "^0.5.0",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
+    "node-fetch": "^2.6.1",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.1.6",
+    "uuid": "^8.3.2",
+    "mathjs": "^9.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.29.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

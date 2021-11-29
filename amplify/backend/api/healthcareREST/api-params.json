@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/v1",
+      "lambdaFunction": "healthcare",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/v1"
+    }
+  ],
+  "resourceName": "healthcareREST",
+  "apiName": "healthcareREST",
+  "functionArns": [
+    {
+      "lambdaFunction": "healthcare"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-healthcare-dev-21505-authRole",
+    "unAuthRoleName": "amplify-healthcare-dev-21505-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "healthcare",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}

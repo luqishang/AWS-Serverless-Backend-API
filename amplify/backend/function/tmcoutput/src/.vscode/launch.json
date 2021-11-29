@@ -1,0 +1,47 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Send CSV to TMC",
+      "type": "aws-sam",
+      "request": "direct-invoke",      
+      "invokeTarget": {
+        //template.yamlファイルにはlayerを指定できます。
+        "target": "template",
+        "templatePath": "template.yaml",
+        "logicalId": "src",
+        //targetがcodeの場合、Layer を適用することはできないものとなります
+        // "target": "code",
+        // "projectRoot": "${workspaceFolder}/",
+        // "lambdaHandler": "index.handler"
+      },
+      "lambda": {        
+        "runtime": "nodejs14.x",
+        "payload": {
+        },
+        "environmentVariables": {
+          "ENV": "dev",
+          "REGION": "ap-northeast-1",        
+          // PROD環境
+          // "USER_POOL_ID": "ap-northeast-1_tIO5wtCR9",
+          // "APP_CLIENT_ID": "55n49r0maq5dojfcmkh913o7sl",
+          // "API_HEALTHCAREGRAPHQL_GRAPHQLAPIENDPOINTOUTPUT": "https://cfpw2usm5jhvlevvhzqymezeye.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+          // "STORAGE_S35F4002E8_BUCKETNAME": "healthcare-images163506-prod"
+          // DEV環境
+          // "USER_POOL_ID": "ap-northeast-1_xUkwVYJV6",
+          // "APP_CLIENT_ID": "2ocerp7qmgjic190cqru0jr6pb",
+          // "API_HEALTHCAREGRAPHQL_GRAPHQLAPIENDPOINTOUTPUT": "https://mxjunxkgo5gyvc6uer3euc4zze.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+          // "STORAGE_S35F4002E8_BUCKETNAME": "healthcare-images21505-dev"
+          // TEST環境
+          // "USER_POOL_ID": "ap-northeast-1_NO0EyNGgH",
+          // "APP_CLIENT_ID": "213n4m6l3hkv51h2qk1ku8gvc",
+          // "API_HEALTHCAREGRAPHQL_GRAPHQLAPIENDPOINTOUTPUT": "https://abcyg4up6bgfrmg6v2rmcxqlwy.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+          // "STORAGE_S35F4002E8_BUCKETNAME": "healthcare-images114229-test"
+        }
+      }
+    }
+  ]
+}

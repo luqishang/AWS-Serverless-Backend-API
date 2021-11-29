@@ -1,0 +1,60 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run Express api",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/app.js",
+      "runtimeExecutable": "nodemon",
+      "required": true,
+      "restart": true,
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "ENV": "dev",
+        "REGION": "ap-northeast-1",
+        "NODE_PATH": "../../healthcarelayerOne/lib/nodejs/node_modules;../../healthcarelayerOne",
+        // PROD環境
+        // "USER_POOL_ID": "ap-northeast-1_tIO5wtCR9",
+        // "APP_CLIENT_ID": "55n49r0maq5dojfcmkh913o7sl",
+        // "API_HEALTHCAREGRAPHQL_GRAPHQLAPIENDPOINTOUTPUT": "https://cfpw2usm5jhvlevvhzqymezeye.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+        // "STORAGE_S35F4002E8_BUCKETNAME": "healthcare-images163506-prod"
+        // DEV環境
+        "USER_POOL_ID": "ap-northeast-1_xUkwVYJV6",
+        "APP_CLIENT_ID": "2ocerp7qmgjic190cqru0jr6pb",
+        "API_HEALTHCAREGRAPHQL_GRAPHQLAPIENDPOINTOUTPUT": "https://mxjunxkgo5gyvc6uer3euc4zze.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+        "STORAGE_S35F4002E8_BUCKETNAME": "healthcare-images21505-dev"
+        // TEST環境
+        // "USER_POOL_ID": "ap-northeast-1_PE7GYtATU",
+        // "APP_CLIENT_ID": "3aupo4os09i8ql7puso4vlh4f8",
+        // "API_HEALTHCAREGRAPHQL_GRAPHQLAPIENDPOINTOUTPUT": "https://7gcfaflic5enhost6xewjstlvu.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+        // "STORAGE_S35F4002E8_BUCKETNAME": "healthcare-images121408-test"
+      }
+    },
+    {
+      "name" : "Run mocha",
+      "program" : "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "request" : "launch",
+      "args" : [
+        "--timeout",
+        "60000",
+        "test/service/*.js"
+      ],
+      "cwd" : "${workspaceRoot}",
+      "env" : {
+        "NODE_ENV" : "dev"
+      },
+      "protocol" : "inspector",
+      "runtimeExecutable" : null,
+      "stopOnEntry" : false,
+      "type" : "node"
+    }
+  ]
+}

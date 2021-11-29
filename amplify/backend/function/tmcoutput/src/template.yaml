@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  src:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      CodeUri: C:/10_Woven/HC-Backend-API/amplify/backend/function/tmcoutput/src
+      Runtime: nodejs14.x
+      Layers:
+        - arn:aws:lambda:ap-northeast-1:379914488656:layer:healthcarelayerOne-test:6
+      Environment:
+        Variables:
+          ENV: dev
+          REGION: ap-northeast-1
+          PATH: /var/lang/bin:/usr/local/bin:/usr/bin/:/bin:/opt/bin
+          USER_POOL_ID: ap-northeast-1_xUkwVYJV6
+          APP_CLIENT_ID: 2ocerp7qmgjic190cqru0jr6pb
+          API_HEALTHCAREGRAPHQL_GRAPHQLAPIENDPOINTOUTPUT: >-
+            https://mxjunxkgo5gyvc6uer3euc4zze.appsync-api.ap-northeast-1.amazonaws.com/graphql
+          STORAGE_S35F4002E8_BUCKETNAME: healthcare-images21505-dev

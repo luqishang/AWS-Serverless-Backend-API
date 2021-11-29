@@ -1,0 +1,364 @@
+@startuml 【特保システム】ER図
+
+/'
+  図の中で目立たせたいエンティティに着色するための
+  色の名前（定数）を定義します。
+'/
+!define MAIN_ENTITY #E2EFDA-C6E0B4
+!define MAIN_ENTITY_2 #FCE4D6-F8CBAD
+
+/' 他の色も、用途が分りやすいように名前をつけます。 '/
+!define METAL #F2F2F2-D9D9D9
+!define MASTER_MARK_COLOR AAFFAA
+!define TRANSACTION_MARK_COLOR FFAA00
+
+/'
+  デフォルトのスタイルを設定します。
+  この場合の指定は class です。entity ではエラーになります。
+'/
+skinparam class {
+    BackgroundColor METAL
+    BorderColor Black
+    ArrowColor Black
+}
+
+package "特保システム" as healthcare_system {
+    /'
+      マスターテーブルを M、トランザクションを T などと安直にしていますが、
+      チーム内でルールを決めればなんでも良いと思います。交差テーブルは "I" とか。
+      角丸四角形が描けない代替です。
+      １文字なら "主" とか "従" とか日本語でも OK だったのが受ける。
+     '/
+    entity "ユーザー情報" as User <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY {
+        + ユーザーID [PK]
+        --
+        アカウント名
+        氏名(姓)
+        氏名(名)
+        カナ名(姓)
+        カナ名(名)
+        画面表示名
+        生年月日
+        電話番号
+        メールアドレス
+        性別(男性:male 女性:female)
+        デバイストークン
+        AWS SNSのendpointArn
+        初回指導日時
+        指導状態
+        組織コード
+        組織名称
+        作成日時
+        更新日時
+        削除日時
+    }
+
+    entity "保健師保険対象者グループ" as NurseUserGroup <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+        + 保健師ID [PK]
+        + ユーザID [PK]
+    }
+    
+    entity "身体測定情報" as HealthCheck <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+        + ユーザID [PK]
+        + 記録年月日 [PK]
+        --
+        体重
+        腹囲
+        血圧(拡張期)
+        血圧(収縮期)
+        １日あたり歩数(自動)
+        １時間あたり歩数(自動)
+        １日あたり歩数(手動)
+        １日あたりトータル消費カロリー(自動)
+        １日あたり安静時消費カロリー(自動)
+        １日あたり運動消費カロリー(自動)
+        歩数取得日時
+        作成日時
+        更新日時
+    }
+
+    entity "身体測定情報(時間単位)" as HealthCheckPerHour <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+        + ユーザID [PK]
+        + 記録年月日 [PK]
+        + hour [PK]
+        --
+        トータル消費カロリー
+        安静時消費カロリー
+        運動消費カロリー
+        １時間あたり歩数(自動)
+        データ取得日時
+        作成日時
+        更新日時
+    }
+
+    entity "特定保健指導目標" as SpecificHealthGoal <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+        + ユーザID   [PK]
+        + 設定年月日 [PK]
+        --
+        期間
+        目標体重
+        目標腹囲
+        作成日時
+        更新日時
+    }
+
+    entity "規約に関する同意" as RuleAgree <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+        + ユーザID   [PK]
+        + 規約枝番 [PK]
+        + 同意日時 [PK]
+        --
+        規約同意可否
+        作成日時
+        更新日時
+    }
+
+    entity "食事摂取ログ" as EatLog <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+        + ユーザID   [PK]
+        + 食事日付 [PK]
+        + 食事時間30分おきのデータ [PK]
+        + 枝番 [PK]
+        --
+        撮影時間
+        画像キー
+        画像パス
+        食事内容
+        入手元
+        メニュー名
+        エネルギー(kcal)
+        たんぱく質(g)
+        脂質(g)
+        炭水化物(g)
+        塩分(g)
+        作成日時
+        更新日時
+    }
+
+    package チャット <<frame>> {
+        entity "チャットメッセージ" as ChatMessage <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+            + チャットメッセージID   [PK]
+            + グループID [PK]
+            --
+            チャットメッセージ本文
+            送信日時
+            投稿者ユーザID
+            削除日時
+            作成日時
+        }
+
+        entity "チャットグループ" as ChatGroup <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+            + チャットグループID   [PK]
+            --
+            グループ名
+            トピックArn
+            削除日時
+            作成日時
+            更新日時
+        }
+
+        entity "チャットグループメンバー" as ChatGroupUser <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+            + グループID   [PK]
+            + ユーザID [PK]
+            --
+            サブスクリプションArn
+        }
+    }
+
+    package 行動目標 <<frame>> {
+        entity "行動目標マスタ" as ActionGoalMaster <<M,MASTER_MARK_COLOR>> {
+            + 行動目標ID [PK]
+            --
+            大分類ID
+            大分類内容
+            中分類ID
+            中分類内容
+            小分類ID
+            小分類内容
+            行動目標内容
+            運動単位
+            食事単位
+            デフォルトの目標時間(分)
+            デフォルトの目標量
+            デフォルトの頻度
+            食品1使用フラグ
+            食品2使用フラグ
+            カロリー消費
+            作成日時
+            更新日時
+        }
+
+        entity "行動目標" as ActionGoal <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+            + ユーザーID   [PK]
+            + 行動目標枝番 [PK]
+            --
+            行動目標種類
+            行動目標ID
+            大分類ID
+            中分類ID
+            行動目標内容
+            カロリー消費
+            目標時間
+            目標量
+            運動単位
+            目標頻度（回数）
+            目標頻度（曜日指定）
+            行為
+            食品1
+            食量1
+            食事単位1
+            食品2
+            食量2
+            食事単位2
+            作成日時
+            更新日時
+        }
+
+        entity "行動目標履歴" as ActionGoalLog <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+            + ユーザーID   [PK]
+            + 行動目標枝番 [PK]
+            + 設定日時 [PK]
+            --
+            行動目標開始日
+            行動目標終了日
+            履歴内容
+            行動目標種類
+            行動目標ID
+            大分類ID
+            中分類ID
+            行動目標内容
+            カロリー消費
+            目標時間
+            目標量
+            運動単位
+            目標頻度（回数）
+            目標頻度（曜日指定）
+            行為
+            食品1
+            食量1
+            食事単位1
+            食品2
+            食量2
+            食事単位2
+            作成日時
+            更新日時
+        }
+
+        entity "行動目標評価結果" as ActionGoalEvaluation <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+            + ユーザーID   [PK]
+            + 行動目標枝番 [PK]
+            + 行動目標実施日 [PK]
+            --
+            实施结果
+            作成日時
+            更新日時
+        }
+    }
+
+    package アンケート <<frame>> {
+        entity "アンケートマスタ" as QuestionNaire <<M,MASTER_MARK_COLOR>> {
+            + アンケートID [PK]
+            --
+            アンケート日付
+            アンケート内容
+            アンケート種類
+            入力パターン
+            大分類ID
+            中分類ID
+            表示順
+            アンケート有効フラグ
+            作成日時
+            更新日時
+        }
+
+        entity "アンケート回答マスタ" as QuestionNaireAnswer <<M,MASTER_MARK_COLOR>> {
+            + アンケート回答ID [PK]
+            --
+            アンケート回答内容
+            アンケートID
+            作成日時
+            更新日時
+        }
+
+        entity "アンケート回答結果" as QuestionNaireAnswerResult <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+            + ユーザーID   [PK]
+            + アンケートID [PK]
+            + アンケート回答ID [PK]
+            --
+            アンケート種類
+            アンケート日付
+            アンケート回答内容
+            アンケート自由回答
+            アンケート内容
+            入力パターン
+            大分類ID
+            中分類ID
+            アンケート回答有効フラグ
+            作成日時
+            更新日時
+        }
+    }
+
+    package チャットBot <<frame>> {
+        entity "チャットBot メッセージ送信履歴" as ChatBotMessageLog <<E,TRANSACTION_MARK_COLOR>> {
+            + ユーザーID [PK]
+            + メッセージID [PK]
+            --
+            週目
+            達成率
+            作成日時
+            更新日時
+        }
+
+        entity "チャットBot メッセージMaster" as ChatBotMessageMaster <<M,MASTER_MARK_COLOR>> {
+            + メッセージID [PK]
+            --
+            週目
+            達成率start
+            達成率end
+            体重増減
+            メッセージ内容
+            作成日時
+            更新日時
+        }
+    }
+
+    entity "中間支援アンケート履歴" as SupportQuestionNaireLog <<E,TRANSACTION_MARK_COLOR>> MAIN_ENTITY_2 {
+        + ユーザID   [PK]
+        + 支援回目 [PK]
+        --
+        回答日
+        体重
+        腹囲
+        行動目標枝番1
+        目標達成率1
+        行動目標枝番2
+        目標達成率2
+        行動目標枝番3
+        目標達成率3
+        食生活
+        身体活動
+        喫煙状況
+        自由入力コメント
+        作成日時
+        更新日時
+    }
+}
+
+User            ||-l-o{     NurseUserGroup
+User            ||-l-o{     RuleAgree
+User            ||-r-o{     ActionGoal
+ActionGoal      ||-r-{      ActionGoalLog
+ActionGoal      ||-d-o{     ActionGoalEvaluation
+User            ||-u-o{     HealthCheck
+User            ||-u-o{     HealthCheckPerHour
+User            ||-u-o{     SpecificHealthGoal
+User            ||-u-o{     EatLog
+User            ||-d-o{     QuestionNaireAnswerResult
+QuestionNaireAnswerResult    }-l-{     QuestionNaire
+QuestionNaire   ||-d-o{    QuestionNaireAnswer
+User            ||-d-o{    ChatGroupUser
+ChatGroup       ||-d-o{    ChatMessage
+ChatGroup       ||-r-o{    ChatGroupUser
+User            ||-l-o{    ChatBotMessageLog
+User            ||-l-o{    SupportQuestionNaireLog
+
+@enduml

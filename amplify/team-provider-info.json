@@ -1,0 +1,119 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-healthcare-dev-21505-authRole",
+      "UnauthRoleArn": "arn:aws:iam::379914488656:role/amplify-healthcare-dev-21505-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::379914488656:role/amplify-healthcare-dev-21505-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-healthcare-dev-21505-deployment",
+      "UnauthRoleName": "amplify-healthcare-dev-21505-unauthRole",
+      "StackName": "amplify-healthcare-dev-21505",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:379914488656:stack/amplify-healthcare-dev-21505/3cc5d470-cdfd-11eb-9c92-0a7e66613e63",
+      "AmplifyAppId": "d2642jsoufvkra"
+    },
+    "categories": {
+      "auth": {
+        "healthcare": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "healthcare": {
+          "deploymentBucketName": "amplify-healthcare-dev-21505-deployment",
+          "s3Key": "amplify-builds/healthcare-69724a6f644831313946-build.zip",
+          "userPoolId": "ap-northeast-1_xUkwVYJV6",
+          "appClientId": "2ocerp7qmgjic190cqru0jr6pb"
+        },
+        "tmcimport": {
+          "deploymentBucketName": "amplify-healthcare-dev-21505-deployment",
+          "s3Key": "amplify-builds/tmcimport-6135797a75726b656f59-build.zip"
+        },
+        "healthcarelayerOne": {
+          "deploymentBucketName": "amplify-healthcare-dev-21505-deployment",
+          "s3Key": "amplify-builds/healthcarelayerOne-LambdaLayerVersiondb47adc2-build.zip"
+        },
+        "tmcoutput": {
+          "deploymentBucketName": "amplify-healthcare-dev-21505-deployment",
+          "s3Key": "amplify-builds/tmcoutput-594a6263306b34486a75-build.zip"
+        }
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-healthcare-prod-71757-authRole",
+      "UnauthRoleArn": "arn:aws:iam::379914488656:role/amplify-healthcare-prod-71757-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::379914488656:role/amplify-healthcare-prod-71757-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-healthcare-prod-71757-deployment",
+      "UnauthRoleName": "amplify-healthcare-prod-71757-unauthRole",
+      "StackName": "amplify-healthcare-prod-71757",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:379914488656:stack/amplify-healthcare-prod-71757/bbad42f0-3c2a-11ec-a48b-069a0a8b5d45",
+      "AmplifyAppId": "d2642jsoufvkra"
+    },
+    "categories": {
+      "auth": {
+        "healthcare": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "healthcare": {
+          "deploymentBucketName": "amplify-healthcare-prod-71757-deployment",
+          "s3Key": "amplify-builds/healthcare-69724a6f644831313946-build.zip",
+          "userPoolId": "ap-northeast-1_tIO5wtCR9",
+          "appClientId": "55n49r0maq5dojfcmkh913o7sl"
+        },
+        "tmcimport": {
+          "deploymentBucketName": "amplify-healthcare-prod-71757-deployment",
+          "s3Key": "amplify-builds/tmcimport-6135797a75726b656f59-build.zip"
+        },
+        "healthcarelayerOne": {
+          "deploymentBucketName": "amplify-healthcare-prod-71757-deployment",
+          "s3Key": "amplify-builds/healthcarelayerOne-LambdaLayerVersionee0ee7cc-build.zip"
+        },
+        "tmcoutput": {
+          "deploymentBucketName": "amplify-healthcare-prod-71757-deployment",
+          "s3Key": "amplify-builds/tmcoutput-39724b3674702f6a4d72-build.zip"
+        }
+      }
+    }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-healthcare-test-121408-authRole",
+      "UnauthRoleArn": "arn:aws:iam::379914488656:role/amplify-healthcare-test-121408-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::379914488656:role/amplify-healthcare-test-121408-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-healthcare-test-121408-deployment",
+      "UnauthRoleName": "amplify-healthcare-test-121408-unauthRole",
+      "StackName": "amplify-healthcare-test-121408",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:379914488656:stack/amplify-healthcare-test-121408/6ced6050-4c0b-11ec-bcdb-0e4eb146d79f",
+      "AmplifyAppId": "d2642jsoufvkra"
+    },
+    "categories": {
+      "function": {
+        "healthcare": {
+          "deploymentBucketName": "amplify-healthcare-test-121408-deployment",
+          "s3Key": "amplify-builds/healthcare-69724a6f644831313946-build.zip",
+          "userPoolId": "ap-northeast-1_PE7GYtATU",
+          "appClientId": "3aupo4os09i8ql7puso4vlh4f8"
+        },
+        "tmcimport": {
+          "deploymentBucketName": "amplify-healthcare-test-121408-deployment",
+          "s3Key": "amplify-builds/tmcimport-6135797a75726b656f59-build.zip"
+        },
+        "healthcarelayerOne": {
+          "deploymentBucketName": "amplify-healthcare-test-121408-deployment",
+          "s3Key": "amplify-builds/healthcarelayerOne-LambdaLayerVersion51520bc2-build.zip"
+        },
+        "tmcoutput": {
+          "deploymentBucketName": "amplify-healthcare-test-121408-deployment",
+          "s3Key": "amplify-builds/tmcoutput-39724b3674702f6a4d72-build.zip"
+        }
+      },
+      "auth": {
+        "healthcare": {},
+        "userPoolGroups": {}
+      }
+    }
+  }
+}
