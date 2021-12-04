@@ -1,17 +1,17 @@
-# 環境構築
-## 必要ソフトのインストール
+# 环境搭建
+## install software for development
 1. Visudal Studio Code  
    https://azure.microsoft.com/ja-jp/products/visual-studio-code/
 1. Node.js
    https://nodejs.org/ja/
 1. AWS CLI  
    https://aws.amazon.com/jp/cli/
-1. Gitアクセス用ツール（VSCode付属のものとSourceTreeで十分）  
+1. Git tool（VSCode and SourceTree）  
    https://www.sourcetreeapp.com/
-1. Postman等のHTTPアクセスツール（ブラウザだとヘッダ―の送出やPOSTがやりにくい）  
+1. Postman HTTP access tool  
    https://www.postman.com/downloads/
   
-## SAM必要ソフトのインストール  
+## SAM local debug software   
 1. Docker  
    https://docs.docker.com/desktop/windows/install/
 1. AWS SAM CLI   
@@ -20,34 +20,33 @@
    https://docs.microsoft.com/ja-jp/windows/wsl/install  
 
 
-## VSCodeの環境設定
-### ESLint(JavaScriptの書式チェック)のインストール
+## VSCode enviroment setting
+### ESLint(JavaScriptの格式check) install
 
-1. 左メニューアイコンの(Ctrl+Shift+X)ボタンを押す
-1. 入力ボックスで「eslint」と入力する
-1. 「ESLint」が表示されるため選択する
-1. インストールボタンを押す
+1. menu please click(Ctrl+Shift+X)
+1. input「eslint」
+1. choose「ESLint」
+1. start install
 
-## Node.js用モジュールのインストール
-1. Amplify CLI (4.52.0)  
-Node.jsをインストールした上で書きコマンドを実行する
+## install Node.js modules
+1. Amplify CLI   
+install Node.js and then run command under
     ~~~
     npm install -g @aws-amplify/cli
     npm install nodemon -g
     ~~~
 
-# ソースコード取得からローカル環境実行
-1. Gitリポジトリのdevlopブランチから最新のソースコード一式をpullし取得
-1. 以下のコマンドにてAWSのプロファイルを作成
+# Get source and run local debug enviroment
+1. pull source from Git repository devlop branch
+1. create AWS profile file by under command
    ~~~
    aws configure
-   AWS Access Key ID:[配布したアクセスキー]
-   AWS Secret Access Key:[配布したシークレットキー]
+   AWS Access Key ID:
+   AWS Secret Access Key:
    Default region name [Japan]:ap-northeast-1
    Default output format [json]:json
    ~~~
-1. 上記コマンド実行時に聞かれるAccessKeyとSecretKeyは別途配布する
-1. プロジェクトソースのルートパスにて以下のコマンドを実行
+1. run under command in project root path (such as C:\20_Wcheng\AWS-Serverless-Backend-API)
    ~~~
    amplify init
    ? Do you want to use an existing environment? (Y/n) Y
@@ -65,14 +64,14 @@ Node.jsをインストールした上で書きコマンドを実行する
    ? Please choose the profile you want to use:
    > default
    ~~~
-1. 上記コマンド実行時にAWSのプロファイル利用を聞かれるので上記のaws configureで作成したプロファイルを選択する(default)
-1. ①amplify/backend/function/healthcarelayerOne  
+1. please use AWS profile (default) that you ceate it by aws configure command.
+1. add those path to your VSCode workspace  
+   ①amplify/backend/function/healthcarelayerOne  
    ②amplify/backend/function/healthcare/src  
    ③amplify/backend/function/tmcimport/src    
    ④amplify/backend/function/tmcimport/src  
    ⑤amplify/backend/api/healthcareGraphQL  
-   ⑥frontend/src/graphql  
-   のパスをVSCodeのワークスペースに追加
+   ⑥frontend/src/graphql 
 1. amplify/backend/function/healthcarelayerOne/lib/nodejsにてnode modulesのインストールを行う
    ```
    npm install
