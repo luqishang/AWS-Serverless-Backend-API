@@ -259,6 +259,12 @@ http://localhost:3000/v1/auth
     - 本番環境：/prod/v1/spec
 
 1. API仕様をYAMLファイルでダウロードする場合は以下のURLで取得可能
+<<<<<<< HEAD
     - ローカル環境：yaml
     - 開発環境：yaml
     - 本番環境：yaml
+=======
+    - ローカル環境：.yaml
+    - 開発環境：.yaml
+    - 本番環境：testyaml
+>>>>>>> 12e4fb499c492b56b0cae23d6e8c2b6082d34682
