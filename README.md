@@ -261,4 +261,4 @@ http://localhost:3000/v1/auth
 1. API仕様をYAMLファイルでダウロードする場合は以下のURLで取得可能
     - ローカル環境：.yaml
     - 開発環境：.yaml
-    - 本番環境：yaml
+    - 本番環境：testyaml
