@@ -1,4 +1,4 @@
-# 环境搭建
+# Environment Setting
 ## install software for development
 1. Visudal Studio Code  
    https://azure.microsoft.com/ja-jp/products/visual-studio-code/
@@ -253,18 +253,3 @@ http://localhost:3000/v1/auth
   https://XXXX.execute-api.ap-northeast-1.amazonaws.com/prod/v1/[自身のパス]
 
 # Reference information
-1. API仕様についてはコントローラーにSwaggerによるOpenAPI記述を行えば以下のURLで随時確認出来る
-    - ローカル環境：http://localhost:3000/v1/spec  
-    - 開発環境：/dev/v1/spec
-    - 本番環境：/prod/v1/spec
-
-1. API仕様をYAMLファイルでダウロードする場合は以下のURLで取得可能
-<<<<<<< HEAD
-    - ローカル環境：yaml
-    - 開発環境：yaml
-    - 本番環境：yaml
-=======
-    - ローカル環境：.yaml
-    - 開発環境：.yaml
-    - 本番環境：testyaml
->>>>>>> 12e4fb499c492b56b0cae23d6e8c2b6082d34682
