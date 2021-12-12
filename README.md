@@ -1,4 +1,4 @@
-# 环境搭建
+# Environment Setting
 ## install software for development
 1. Visudal Studio Code  
    https://azure.microsoft.com/ja-jp/products/visual-studio-code/
