@@ -253,12 +253,3 @@ http://localhost:3000/v1/auth
   https://XXXX.execute-api.ap-northeast-1.amazonaws.com/prod/v1/[自身のパス]
 
 # Reference information
-1. API仕様についてはコントローラーにSwaggerによるOpenAPI記述を行えば以下のURLで随時確認出来る
-    - ローカル環境：http://localhost:3000/v1/spec  
-    - 開発環境：/dev/v1/spec
-    - 本番環境：/prod/v1/spec
-
-1. API仕様をYAMLファイルでダウロードする場合は以下のURLで取得可能
-    - ローカル環境：.yaml
-    - 開発環境：.yaml
-    - 本番環境：testyaml
